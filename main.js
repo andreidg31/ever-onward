@@ -45,13 +45,15 @@ app.get('/', (req, res) => {
 app.post('/register', (req, res) => {
     const email = req.body.email;
     const pass = req.body.password;
-    if (!email || !pass || !ValidateEmail(email)) {
+    const surname = req.body.surname;
+    const lastname = req.body.lastname;
+    if (!email || !pass || !surname || !lastname) {
         return res
             .status(400)
-            .json({msg: 'The data you sent is missing or is not correct'});
+            .json({msg: 'The data you sent is missing!'});
     }
     // console.log(email, pass);
-    let sql = `INSERT INTO users (email, password) VALUES ('${email}', '${pass}')`;
+    let sql = `INSERT INTO users (email, password, surname, lastname) VALUES ('${email}', '${pass}', '${surname}', '${lastname}')`;
     con.query(sql, function (err, result) {
         if (err) 
             throw err;
