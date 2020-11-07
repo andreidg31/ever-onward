@@ -7,7 +7,8 @@ import {useState, useEffect} from 'react';
 function Profile({user}) {
     const [visLocations, setVisLocations] = useState([]);
     const [suggestedLocations, setSuggestedLocations] = useState([]);
-    const [position, setPosition] = useState({});
+    const [position, setPosition] = useState({
+    });
 
     async function requestVisLocations() {
         const response = await axios.post('http://localhost:4000/profile_page', {
@@ -23,6 +24,8 @@ function Profile({user}) {
     }
 
     async function requestSugLocations() {
+        console.log("hello");
+        console.log(position);
         if (position !== {} && position.latitude) {
             // console.log(user.userid)
             // console.log(position.longitude)
@@ -50,7 +53,7 @@ function Profile({user}) {
             });
         }
     }
-    console.log()
+
     function renderSuggestedLocations() {
         console.log(suggestedLocations);
         if(suggestedLocations) {
@@ -62,23 +65,18 @@ function Profile({user}) {
 
     useEffect(() => {
 
-        const interval = setInterval(() => {
-          navigator.geolocation.getCurrentPosition((position) => {
+        navigator.geolocation.getCurrentPosition((position) => {
             setPosition({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
-            // requestSugLocations();
-          });
-        }, 5000);
-        if (position) {
-            requestSugLocations();
-        }
-        return () => clearInterval();
+        });
+        requestSugLocations();
     }, []);
 
     useEffect(() =>{
         requestVisLocations();
+        
     }, []);
 
     return (
