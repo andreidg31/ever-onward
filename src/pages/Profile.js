@@ -88,10 +88,11 @@ function Profile({user}) {
         <div className="Profile">
 
             <Image src="" alt="Placeholder"/>
-            <h1> {user.surname + ' ' + user.lastname} </h1>
+            <h2> {user.surname + ' ' + user.lastname} </h2>
             <p> Explorer Level 1 </p>
-            <h1>Visited Locations</h1>
+            <h1> Visited Locations </h1>
             {renderVisitedLocations()}
+            <h1> Suggested Locations </h1>
             {renderSuggestedLocations()}
             {user.email}
         </div>
