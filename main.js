@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.post('/login', (req, res) => {
+app.post('/register', (req, res) => {
     const email = req.body.email;
     const pass = req.body.password;
     if (!email || !pass || !ValidateEmail(email)) {
@@ -60,6 +60,29 @@ app.post('/login', (req, res) => {
     res.redirect('/');
     // res.end("yes");
 });
+
+app.post('/login', (req,res) => {
+    const email = req.body.email;
+    const pass = req.body.password;
+    if (!email || !pass || !ValidateEmail(email)) {
+        return res
+            .status(400)
+            .json({msg: 'The data you sent is missing or is not correct'});
+    }
+    // console.log(email, pass);
+    let sql = `SELECT email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
+    con.query(sql, function (err, result) {
+        if (err){
+            throw err;
+        }
+        if (result.length == 0){
+            res.send("invalid username/password");
+        }else{
+            console.log("logged in");
+            res.send(result[0])
+        }
+    });
+})
 
 
 // dev_ops
