@@ -48,18 +48,22 @@ function Profile({user}) {
     function renderVisitedLocations() {
         console.log(visLocations);
         if (visLocations) {
+            let itemArr =[];
             visLocations.forEach((location, index) => {
-                <LocationVisited location={location} key={index}/>
+                itemArr.push(<LocationVisited location={location} key={index}/>);
             });
+            return itemArr;
         }
     }
 
     function renderSuggestedLocations() {
         console.log(suggestedLocations);
         if(suggestedLocations) {
+            let itemArr =[];
             suggestedLocations.forEach((location, index) => {
-                <LocationSuggested location={location} key={index} />
-            })
+                itemArr.push(<LocationSuggested location={location} key={index} />);
+            });
+            return itemArr;
         }
     }
 
