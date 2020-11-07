@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import './Register.css';
 
-function Register() {
+function Register({setUser}) {
 
   const { watch, register, handleSubmit, errors } = useForm();
 
@@ -13,10 +13,14 @@ function Register() {
       const res = await axios.post('http://localhost:4000/register', {
         email: data.email,
         password: data.password,
-        surname: data.firstname,
+        surname: data.surname,
         lastname: data.lastname,
         totalscore: 0,
         achivement: 0
+      });
+      setUser({
+        email: data.email,
+        password: data.password
       });
     } catch (err) {
       console.error(err);

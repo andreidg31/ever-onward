@@ -5,7 +5,8 @@
 /.pnp
 .pnp.js
 package-lock.json
-
+/src/_helpers/*
+/src/_services/*
 # testing
 /coverage
 
