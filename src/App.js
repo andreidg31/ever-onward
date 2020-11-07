@@ -47,7 +47,11 @@ function App() {
                     <Switch>
                         {!user
                             ? <Redirect exact from="/trips" to="/login"/>
-                            : <Redirect exact from="/login" to="/home" />
+                            : 
+                            <div>
+                                <Redirect exact from="/login" to="/home" />
+                                <Redirect exact from="register" to="/home" />
+                            </div>
                         }
 
                         <Route path="/about"></Route>
