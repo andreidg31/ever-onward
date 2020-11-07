@@ -7,7 +7,7 @@ import {useState, useEffect} from 'react';
 function Profile({user}) {
     const [visLocations, setVisLocations] = useState([]);
     const [suggestedLocations, setSuggestedLocations] = useState([]);
-    const [position, setPosition] = useState({
+    const [position, setPosition] = useState({longitude: 44.447227, latitude: 26.051431
     });
 
     async function requestVisLocations() {
@@ -22,6 +22,7 @@ function Profile({user}) {
             console.log(response);
         }
     }
+    console.log()
 
     async function requestSugLocations() {
         console.log("hello");
@@ -48,16 +49,18 @@ function Profile({user}) {
     function renderVisitedLocations() {
         console.log(visLocations);
         if (visLocations) {
-            visLocations.forEach((location, index) => {
+            return (visLocations.forEach((location, index) => {
+                console.log(location);
                 <LocationVisited location={location} key={index}/>
-            });
+                
+            }))
         }
     }
 
     function renderSuggestedLocations() {
         console.log(suggestedLocations);
         if(suggestedLocations) {
-            suggestedLocations.forEach((location, index) => {
+            return suggestedLocations.forEach((location, index) => {
                 <LocationSuggested location={location} key={index} />
             })
         }
