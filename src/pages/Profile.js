@@ -23,17 +23,17 @@ function Profile({user}) {
         }
     }
 
-    async function requestSugLocations() {
+    async function requestSugLocations(positionx) {
         console.log("hello");
-        console.log(position);
-        if (position !== {} && position.latitude) {
+        // console.log(positionx);
+        if (positionx !== {}) {
             // console.log(user.userid)
-            // console.log(position.longitude)
-            // console.log(position.latitude)
+            console.log(positionx.coords.longitude)
+            console.log(positionx.coords.latitude)
             const response = await axios.post('http://localhost:4000/suggestions', {
                 userid: user.userid,
-                longitude: position.longitude,
-                latitude: position.latitude
+                longitude: positionx.coords.longitude,
+                latitude: positionx.coords.latitude
             });
             // console.log(response);
             if (response.status === 200) {
@@ -70,12 +70,13 @@ function Profile({user}) {
     useEffect(() => {
 
         navigator.geolocation.getCurrentPosition((position) => {
+            requestSugLocations(position);
             setPosition({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             });
         });
-        requestSugLocations();
+        // requestSugLocations();
     }, []);
 
     useEffect(() =>{
