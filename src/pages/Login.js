@@ -11,7 +11,10 @@ function Login({user, setUser}) {
       password: data.password
     });
     
-    axios.post('/login', user);
+    axios.post('http://localhost:4000/login', user)
+        .then(response => {
+          console.log(response.data);
+        })
   }
 
   return (

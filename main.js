@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const logger = require("./logger");
-path = require('path');
+let path = require('path');
+let cors = require('cors');
 
 const {connect} = require('http2');
 const {builtinModules} = require('module');
@@ -33,6 +34,7 @@ con.connect((err) => {
 const app = express();
 
 app.use(logger);
+app.use(cors());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
