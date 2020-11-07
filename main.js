@@ -198,24 +198,26 @@ app.get('/search/:idCity', (req, res) => {
     })
 })
 
-app.get('/profile_page', (req,res) => {
+app.post('/profile_page', (req,res) => {
     let id = req.body.userid;
     let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}' AND records.idchallenges = challenges.idchallenges)`;
     con.query(sql, function (err, result) {
         if (err) 
             throw err;
-        res.send(result);
+        res.status(200).send(result);
     })
 })
 
-app.get('/sugestions', (req,res) => {
+app.post('/suggestions', (req,res) => {
     let id = req.body.userid;
     let longitude = req.body.longitude;
     let latitude = req.body.latitude;
+    // console.log(req.body);
     let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}' AND records.idchallenges != challenges.idchallenges AND (POW(challenges.longitude - ${longitude}, 2) + POW(challenges.latitude - ${latitude}, 2) <= challenges.radius))`;
     con.query(sql, function (err, result) {
         if (err) 
             throw err;
+        result = result.filter((v,i,a) => a.findIndex(t=>(t.idchallenges === v.idchallenges))===i);
         res.send(result);
     })
 })

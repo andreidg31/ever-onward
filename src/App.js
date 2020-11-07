@@ -48,28 +48,26 @@ function App() {
                         {!user
                             ? <Redirect exact from="/trips" to="/login"/>
                             : 
-                            <div>
                                 <Redirect exact from="/login" to="/home" />
-                                <Redirect exact from="/register" to="/home" />
-                            </div>
+                                // <Redirect exact from="/register" to="/home" />
                         }
-                        <Route path="/profile">
-                            <Profile user={user} />
-                        </Route>
                         <Route path="/home">
                             <Home user={user} />
                         </Route>
-
+                        <Route path="/profile">
+                            <Profile user={user} />
+                        </Route>
+                        
                         {!user &&
-                            <div>
+                            // <div>
                                 <Route path="/login">
                                     <Login user={user} setUser={setUser}/>
                                 </Route>
 
-                                <Route path="/register">
-                                    <Register/>
-                                </Route>
-                            </div>
+                                // <Route path="/register">
+                                //     <Register/>
+                                // </Route>
+                            // </div>
                         }
                         
 
