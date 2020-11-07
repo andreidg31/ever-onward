@@ -10,7 +10,7 @@ function Register({setUser}) {
   const onSubmit = async (data) => {
     
     try {
-      const res = await axios.post('http://localhost:4000/register', {
+      const response = await axios.post('http://localhost:4000/register', {
         email: data.email,
         password: data.password,
         surname: data.surname,
@@ -18,10 +18,12 @@ function Register({setUser}) {
         totalscore: 0,
         achivement: 0
       });
-      setUser({
-        email: data.email,
-        password: data.password
-      });
+      if (response.status ===200) {
+        setUser({
+          email: data.email,
+          password: data.password
+        });
+      }
     } catch (err) {
       console.error(err);
     }

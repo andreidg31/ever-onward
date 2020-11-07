@@ -10,15 +10,17 @@ function Login({user, setUser}) {
 
   const onSubmit = async (data) => {
 
-    setUser({
-      email: data.email,
-      password: data.password
-    });
-    
-    localStorage.setItem('currentUser', JSON.stringify(user));
     try {
-      const response = await axios.post('http://localhost:4000/login', user);
-      
+      const response = await axios.post('http://localhost:4000/login', {
+          email: data.email,
+          password: data.password
+      });
+      if (response.status ===200) {
+        setUser({
+          email: data.email,
+          password: data.password
+        });
+      }
       console.log(response.data);
     } catch (err) {
       console.error(err);
