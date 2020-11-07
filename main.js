@@ -71,7 +71,7 @@ app.post('/login', (req, res) => {
             .status(400)
             .json({msg: 'The data you sent is missing or is not correct'});
     }
-    let sql = `SELECT email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
+    let sql = `SELECT idusers, email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
     con.query(sql, function (err, result) {
         if (err) {
             throw err;
@@ -198,6 +198,29 @@ app.get('/search/:idCity', (req, res) => {
     })
 })
 
+app.get('/profile_page', (req,res) => {
+    let id = req.body.userid;
+    let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}' AND records.idchallenges = challenges.idchallenges)`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        res.send(result);
+    })
+})
+
+app.get('/sugestions', (req,res) => {
+    let id = req.body.userid;
+    let longitude = req.body.longitude;
+    let latitude = req.body.latitude;
+    let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}' AND records.idchallenges != challenges.idchallenges AND (POW(challenges.longitude - ${longitude}, 2) + POW(challenges.latitude - ${latitude}, 2) <= challenges.radius))`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        res.send(result);
+    })
+})
+
+// aici ne zice daca a rezolvat challenge-ul
 app.post('/solved/:idChallenge', (req, res) => {
     let id = req.params.idChallenge;
     let userid = req.body.userid;
