@@ -9,12 +9,10 @@ const {connect} = require('http2');
 const {builtinModules} = require('module');
 const mysql = require('mysql');
 
-function ValidateEmail(mail) 
-{
- if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail))
-  {
-    return (true)
-  }
+function ValidateEmail(mail) {
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+        return (true)
+    }
     alert("You have entered an invalid email address!")
     return (false)
 }
@@ -37,7 +35,7 @@ app.use(logger);
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
     // res.send(`Hello World!`);
@@ -63,7 +61,7 @@ app.post('/register', (req, res) => {
     // res.end("yes");
 });
 
-app.post('/login', (req,res) => {
+app.post('/login', (req, res) => {
     const email = req.body.email;
     const pass = req.body.password;
     if (!email || !pass || !ValidateEmail(email)) {
@@ -71,21 +69,21 @@ app.post('/login', (req,res) => {
             .status(400)
             .json({msg: 'The data you sent is missing or is not correct'});
     }
-    // console.log(email, pass);
     let sql = `SELECT email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
     con.query(sql, function (err, result) {
-        if (err){
+        if (err) {
             throw err;
         }
-        if (result.length == 0){
-            res.send("invalid username/password");
-        }else{
+        if (result.length == 0) {
+            return res
+                .status(400)
+                .json({msg: "invalid username/password"});
+        } else {
             console.log("logged in");
-            res.send(result[0])
+            res.status(200).send(result[0])
         }
     });
 })
-
 
 // dev_ops
 app.get('/show_db', (req, res) => {
@@ -100,11 +98,11 @@ app.get('/show_db', (req, res) => {
     });
 })
 
-app.get('/add_city', (req,res) =>{
+app.get('/add_city', (req, res) => {
     res.sendFile(path.join(__dirname, "add_city.html"));
 })
 
-app.get('/show_cities', (req,res) => {
+app.get('/show_cities', (req, res) => {
     let sql = `SELECT * FROM city`;
     con.query(sql, function (err, result) {
         if (err) 
@@ -116,7 +114,7 @@ app.get('/show_cities', (req,res) => {
     });
 })
 
-app.get('/show_challenges', (req,res) => {
+app.get('/show_challenges', (req, res) => {
     let sql = `SELECT * FROM challenges`;
     con.query(sql, function (err, result) {
         if (err) 
@@ -128,14 +126,14 @@ app.get('/show_challenges', (req,res) => {
     });
 })
 
-app.post('/add_city/submit', (req,res) => {
+app.post('/add_city/submit', (req, res) => {
     const name = req.body.name;
     const country = req.body.country;
     const ff1 = req.body.ff1;
     const ff2 = req.body.ff2;
     const ff3 = req.body.ff3;
 
-    console.log(name,country,ff1,ff2,ff3);
+    console.log(name, country, ff1, ff2, ff3);
 
     let sql = `INSERT INTO city (name, country, fun_fact1, fun_fact2, fun_fact3) VALUES ('${name}', '${country}', '${ff1}', '${ff2}', '${ff3}')`;
     con.query(sql, function (err, result) {
@@ -145,22 +143,23 @@ app.post('/add_city/submit', (req,res) => {
     });
 });
 
-app.post('/add_challenge/submit', (req,res) =>{
+app.post('/add_challenge/submit', (req, res) => {
     const city = req.body.city;
     const country = req.body.country;
     const name = req.body.name;
     const description = req.body.description;
     const score = req.body.score;
-    let idcity, prev_Scoren, no_challenges;
+    let idcity,
+        prev_Scoren,
+        no_challenges;
 
-    console.log(city,country,name,description,score);
-
+    console.log(city, country, name, description, score);
 
     let sql = `SELECT idcity, total_score, no_challenges FROM city WHERE ( name = '${city}' AND country = '${country}' )`;
     con.query(sql, function (err, result) {
         if (err) 
             throw err;
-        if (result.length > 1){
+        if (result.length > 1) {
             console.log("there are multiple cities wiht this name, please fix!");
             res.send("there are multiple cities wiht this name, please fix!");
         }
@@ -171,19 +170,84 @@ app.post('/add_challenge/submit', (req,res) =>{
 
         sql = `INSERT INTO challenges (idcity, name, description, score) VALUES ('${idcity}', '${name}', '${description}', '${score}')`;
         con.query(sql, function (err, result) {
-        if (err) 
-            throw err;
-        console.log("1 record inserted");
-        no_challenges++;
-        sql = `UPDATE city SET total_score = ${new_score}, no_challenges = ${no_challenges} WHERE idcity = ${idcity}`;
-        con.query(sql, function (err, result) {
-        if (err) 
-            throw err;
-        console.log("1 record updated");
-        })
+            if (err) 
+                throw err;
+            console.log("1 record inserted");
+            no_challenges++;
+            sql = `UPDATE city SET total_score = ${new_score}, no_challenges = ${no_challenges} WHERE idcity = ${idcity}`;
+            con.query(sql, function (err, result) {
+                if (err) 
+                    throw err;
+                console.log("1 record updated");
+            })
         })
         let new_score = prev_Score + score;
     });
+})
+
+app.get('/search/:idCity', (req, res) => {
+    // res.send(`HEHE ${req.params.idCity}`);
+    let id = req.params.idCity;
+    let sql = `SELECT idchallenges, name, description, score FROM challenges WHERE ( idcity = '${id}')`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        res.send(result);
+    })
+})
+
+app.post('/solved/:idChallenge', (req, res) => {
+    let id = req.params.idChallenge;
+    let userid = req.body.userid;
+
+    let sql = `SELECT idrecords FROM records WHERE ( idchallenges = '${id}' AND idusers = '${userid}')`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        if (result.length == 0) {
+            // user didn t complete this challenge yet
+            sql = `SELECT score FROM challenges WHERE ( idchallenges = '${id}')`;
+            con.query(sql, function (err, result) {
+                if (err) 
+                    throw err;
+                if (result.length != 1) {
+                    return res
+                        .status(400)
+                        .json({msg: "Something went wrong! Challenge not found!"});
+                }
+                let inc = result[0].score;
+                sql = `SELECT total_score FROM users WHERE ( idusers = '${userid}')`;
+                con.query(sql, function (err, result) {
+                    if (err) 
+                        throw err;
+                    if (result.length != 1) {
+                        return res
+                            .status(400)
+                            .json({msg: "Something went wrong! User not found!"});
+                    }
+                    let total = result[0].total_score + inc;
+                    sql = `UPDATE users SET total_score = ${total} WHERE ( idusers = '${userid}')`;
+                    con.query(sql, function (err, result) {
+                        if (err) 
+                            throw err;
+                        sql = `INSERT INTO records (idusers, idchallenges) VALUES (${userid}, ${id})`;
+                        con.query(sql, function (err, result) {
+                            if (err) 
+                                throw err;
+                            
+                            console.log("updated");
+                            res.send("Done");
+                        })
+                    })
+                })
+            })
+        } else {
+            return res
+                .status(400)
+                .json({msg: "Something went wrong! User already completed this!"});
+        }
+    })
+
 })
 
 app.get('')
