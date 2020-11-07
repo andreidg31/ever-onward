@@ -1,10 +1,15 @@
 import React from 'react';
+import './Home.css';
 
-function Home({isAuth, user}) {
+function Home({user}) {
   return (
-    <div>
+    <div className="home">
+    
       <h2>Welcome Home</h2>
-      <p>{user && user.email}</p>
+      <h1>Salutare</h1>
+      <p>asd</p>
+      <p>asd</p>
+      <p>asd</p>
     </div>
   );
 }

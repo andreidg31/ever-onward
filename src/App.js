@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register';
+import Profile from './pages/Profile';
 
 import {useEffect, useState} from 'react';
 import {Button, Form, FormControl, Nav, Navbar} from 'react-bootstrap';
@@ -10,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
-    const [isAuth, setAuthentication] = useState(false);
     const [user, setUser] = useState(
         localStorage.getItem('currentUser')
             ? JSON.parse(localStorage.getItem('currentUser'))
@@ -33,6 +33,7 @@ function App() {
                     <Navbar.Brand href="#home">Navbar</Navbar.Brand>
                     <Nav className="mr-auto">
                         <Nav.Link href="/home">Home</Nav.Link>
+                        <Nav.Link href="/profile"> Profile </Nav.Link>
                         {!user && <Nav.Link href="/login">Login</Nav.Link> }
                         {!user && <Nav.Link href="/register">Register</Nav.Link> }
                         {user && <Button onClick={() => logout()}>Logout</Button>}
@@ -42,7 +43,6 @@ function App() {
 
                     </Form>
                 </Navbar>
-
                 <div>
                     <Switch>
                         {!user
@@ -50,11 +50,16 @@ function App() {
                             : 
                             <div>
                                 <Redirect exact from="/login" to="/home" />
-                                <Redirect exact from="register" to="/home" />
+                                <Redirect exact from="/register" to="/home" />
                             </div>
                         }
+                        <Route path="/profile">
+                            <Profile user={user} />
+                        </Route>
+                        <Route path="/home">
+                            <Home user={user} />
+                        </Route>
 
-                        <Route path="/about"></Route>
                         {!user &&
                             <div>
                                 <Route path="/login">
@@ -66,9 +71,7 @@ function App() {
                                 </Route>
                             </div>
                         }
-                        <Route path="/">
-                            <Home isAuth={isAuth} user={user}/>
-                        </Route>
+                        
 
                     </Switch>
                 </div>
