@@ -10,16 +10,16 @@ function Login({user, setUser}) {
 
   const onSubmit = async (data) => {
 
-    setUser({
-      email: data.email,
-      password: data.password
-    });
-    
-    localStorage.setItem('currentUser', JSON.stringify(user));
     try {
-      const response = await axios.post('http://localhost:4000/login', user);
-      
-      console.log(response.data);
+    const res = await axios.post('http://localhost:4000/login', {
+        email: data.email,
+        password: data.password
+      });
+      // console.log(res);
+      setUser({
+        email: data.email,
+        password: data.password
+      });
     } catch (err) {
       console.error(err);
     }

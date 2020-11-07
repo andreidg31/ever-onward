@@ -35,7 +35,7 @@ app.use(logger);
 app.use(cors());
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
     // res.send(`Hello World!`);
@@ -62,16 +62,13 @@ app.post('/register', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    const data = req.body;
     const email = req.body.email;
     const pass = req.body.password;
     if (!email || !pass || !ValidateEmail(email)) {
-        // res.send(req.body);
         return res
             .status(400)
             .json({msg: 'The data you sent is missing or is not correct'});
     }
-    // console.log(email, pass);
     let sql = `SELECT email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
     con.query(sql, function (err, result) {
         if (err) {
@@ -83,7 +80,7 @@ app.post('/login', (req, res) => {
                 .json({msg: "invalid username/password"});
         } else {
             console.log("logged in");
-            res.send(result[0])
+            res.status(200).send(result[0])
         }
     });
 })
