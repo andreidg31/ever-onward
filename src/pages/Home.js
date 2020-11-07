@@ -4,8 +4,7 @@ function Home({isAuth, user}) {
   return (
     <div>
       <h2>Welcome Home</h2>
-      <p>{isAuth.toString()}</p>
-      <p>{user.email}</p>
+      <p>{user && user.email}</p>
     </div>
   );
 }

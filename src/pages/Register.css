@@ -1,0 +1,14 @@
+.RegisterContainer {
+    margin: 10%;
+    height: 500px;
+    width: auto;
+    padding: 5%;
+    background-color: aqua;
+    display: flexbox;
+    flex-direction: column;
+}
+
+.RegisterForm {
+    display: flexbox;
+    flex-direction: column;
+}

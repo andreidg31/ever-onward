@@ -1,20 +1,32 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import './Register.css';
 
-function SignUp() {
+function Register() {
 
   const { watch, register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     
-    
+    try {
+      const res = await axios.post('http://localhost:4000/register', {
+        email: data.email,
+        password: data.password,
+        surname: data.firstname,
+        lastname: data.lastname,
+        totalscore: 0,
+        achivement: 0
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
-  <div className="SignUpContainer">
-    <form className="SignUpForm" onSubmit={handleSubmit(onSubmit)}>
-      <input name="firstname" type="text" ref={register()} />
+  <div className="RegisterContainer">
+    <form className="RegisterForm" onSubmit={handleSubmit(onSubmit)}>
+      <input name="surname" type="text" ref={register()} />
       <input name="lastname" type="text" ref={register()} />
       <input 
         name="email"
@@ -39,4 +51,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Register;

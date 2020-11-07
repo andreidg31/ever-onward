@@ -1,20 +1,29 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import './Login.css'
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
+
 function Login({user, setUser}) {
 
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+
     setUser({
       email: data.email,
       password: data.password
     });
     
-    axios.post('http://localhost:4000/login', user)
-        .then(response => {
-          console.log(response.data);
-        })
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    try {
+      const response = await axios.post('http://localhost:4000/login', user);
+      
+      console.log(response.data);
+    } catch (err) {
+      console.error(err);
+    }
+    
   }
 
   return (
@@ -35,6 +44,7 @@ function Login({user, setUser}) {
         <input name="password" type="password" ref={register()} />
         <button type="submit"> Login </button>
       </form>
+      <p>{user.email}</p>
     </div>
   );
 }
