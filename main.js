@@ -71,7 +71,7 @@ app.post('/login', (req, res) => {
             .status(400)
             .json({msg: 'The data you sent is missing or is not correct'});
     }
-    let sql = `SELECT idusers, email, surname, lastname, total_score, achievments, is_admin FROM users WHERE (email = '${email}' AND password = '${pass}')`;
+    let sql = `SELECT idusers, email, surname, lastname, total_score, achievments, is_admin, nocc FROM users WHERE (email = '${email}' AND password = '${pass}')`;
     con.query(sql, function (err, result) {
         if (err) {
             throw err;
@@ -218,18 +218,29 @@ app.post('/suggestions', (req,res) => {
         if (err) 
             throw err;
         result = result.filter((v,i,a) => a.findIndex(t=>(t.idchallenges === v.idchallenges))===i);
-        res.send(result);
+        res.status(200).send(result);
     })
 })
 
 app.post('/achievements', (req,res) => {
     let id = req.body.userid;
-    let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}')`;
+    let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}' AND records.idchallenges = challenges.idchallenges)`;
     con.query(sql, function (err, result) {
         if (err) 
             throw err;
         result = result.filter((v,i,a) => a.findIndex(t=>(t.idchallenges === v.idchallenges))===i);
-        res.send(result);
+        res.status(200).send(result);
+    })
+})
+
+app.post('/update_ach', (req,res) => {
+    let id = req.body.userid;
+    let ach = req.body.achievements;
+    sql = `UPDATE users SET achievments = ${ach} WHERE ( idusers = '${id}')`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        res.status(200).send(result);
     })
 })
 
@@ -254,7 +265,7 @@ app.post('/solved/:idChallenge', (req, res) => {
                         .json({msg: "Something went wrong! Challenge not found!"});
                 }
                 let inc = result[0].score;
-                sql = `SELECT total_score FROM users WHERE ( idusers = '${userid}')`;
+                sql = `SELECT total_score, nocc FROM users WHERE ( idusers = '${userid}')`;
                 con.query(sql, function (err, result) {
                     if (err) 
                         throw err;
@@ -264,7 +275,8 @@ app.post('/solved/:idChallenge', (req, res) => {
                             .json({msg: "Something went wrong! User not found!"});
                     }
                     let total = result[0].total_score + inc;
-                    sql = `UPDATE users SET total_score = ${total} WHERE ( idusers = '${userid}')`;
+                    let nocc = result[0].nocc+1;
+                    sql = `UPDATE users SET total_score = ${total}, nocc=${nocc} WHERE ( idusers = '${userid}')`;
                     con.query(sql, function (err, result) {
                         if (err) 
                             throw err;

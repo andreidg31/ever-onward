@@ -9,7 +9,8 @@ function Profile({user}) {
     const [visLocations, setVisLocations] = useState([]);
     const [suggestedLocations, setSuggestedLocations] = useState([]);
     const [position, setPosition] = useState({});
-    let level, achievement_list, title;
+    let title,
+        level;
 
     async function requestVisLocations() {
         const response = await axios.post(
@@ -22,36 +23,6 @@ function Profile({user}) {
         } else {
             console.log(response);
         }
-    }
-
-    async function requestAchievements() {
-        const response = await axios.post(
-            'http://localhost:4000/achievements',
-            {userid: user.userid}
-        );
-
-        if (response.status === 200) {
-            set_info(parse_achievements(response.data));
-        } else {
-            console.log(response);
-        }
-    }
-
-    function parse_achievements(data){
-        let userach = user.achievements;
-        let ach = return_achievements(userach);
-        if (data.length >= 1){
-            userach = add_achievement(userach,0);
-            if (data.length >= 5){
-                userach = add_achievement(userach,6);
-            }
-            for (let x in data){
-                if (x.achievements){
-                    userach = add_achievement(userach,x.achievements);
-                }
-            }
-        }
-        return return_achievements(userach);
     }
 
     async function requestSugLocations(positionx) {
@@ -115,97 +86,72 @@ function Profile({user}) {
 
     }, []);
 
-    useEffect(() => {
-        requestAchievements();
-
-    }, []);
-
     return (
         <div className="Profile">
 
             <Image src="" alt="Placeholder"/>
             <h2>
                 {user.surname + ' ' + user.lastname}
+                {set_info()}
+                {/* {parse_achievements()} */}
             </h2>
+            <h3>
+                {'Title ' + title}
+            </h3>
             <p>
-                Explorer Level 1
+                Explorer Level {level}
             </p>
-            {/* <h1> Visited Locations </h1>
-
-            <h1> Suggested Locations </h1> */
-            }
-            {/* {user.email} */}
-            <div class="abouts">
-                {return_achievements(user.achievements)}
-            </div>
+            <div class="abouts"></div>
             <div class="tables">
                 <div class="c">
-                        Visited {renderVisitedLocations()}
+                    Visited {renderVisitedLocations()}
                 </div>
-                <div class="c">Badges</div>
                 <div class="c">
-                        Suggestions {renderSuggestedLocations()}
+                    <h3>Badges</h3> 
+                {return_achievements()}
+                </div>
+                <div class="c">
+                    Suggestions {renderSuggestedLocations()}
                 </div>
                 {/* <div class="c">hey</div>
-                <div class="c">hey</div> */}
+                <div class="c">hey</div> */
+                }
             </div>
         </div>
     );
 
-    function return_achievements(ach) {
-        //primeste un numar returneaza un vector de stringuri
-        let list_of_ach = [
-            'Prima calatorie',
-            'Radioactive',
-            'The Beginning',
-            'Vizita muzeu de arta',
-            'Vizita castel',
-            'Vizita Franta',
-            '5 calatorii'
-        ]
-        let arr = [];
-        for (let i = 0; ach > 0; ach >> 1, i++) {
-            if (ach % 2) {
-                arr.push(list_of_ach[i]);
-            }
+    function return_achievements() {
+        let list_of_ach = ['Prima calatorie', '5 calatorii', '15 calatorii']
+        let arr=[];
+        if (user.nocc > 0){
+            arr.push(list_of_ach[0]);
+        }
+        if (user.nocc > 4){
+            arr.push(list_of_ach[1]);
+        }
+        if (user.nocc > 14){
+            arr.push(list_of_ach[2]);
         }
         return arr;
     }
-    
-    function add_achievement(number, ach) {
-        //primeste un numar si indicele achievementu-ului returneaza numarul
-        number |= 1 << ach;
-        return number;
-    }
-    
+
     function calc_level(score) {
         // returneaza un obiect cu nr nivelului (1,2,100) si cu titlul nivelului
         let list_of_levels = ['Level1', 'Level2', 'Level3', 'Level4', 'Mr. Worldwide'];
-        let level = score / 100 + 1;
+        let level = Math.floor(score / 100 + 1);
         let index = level <= 5
             ? level
             : 5;
         return {level: level, title: list_of_levels[index]};
-    
+
     }
-    
-    function set_info(data){
+
+    function set_info(data) {
+        console.log(user);
         level = calc_level(user.total_score);
-        achievement_list = data;
         title = level.title;
         level = level.level;
-    
-    }
-    
-    function show_info(){
-            let itemArr = [title,level];
-            achievement_list.forEach((location, index) => {
-                itemArr.push(<LocationVisited location={location} key={index}/>);
-            });
-            return itemArr;
     }
 }
-
-
 
 export default Profile;

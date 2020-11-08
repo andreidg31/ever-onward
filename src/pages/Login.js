@@ -21,7 +21,10 @@ function Login({user, setUser}) {
           userid: response.data.idusers,
           email: data.email,
           surname: response.data.surname,
-          lastname: response.data.lastname
+          lastname: response.data.lastname,
+          achievements: response.data.achievments,
+          total_score: response.data.total_score,
+          nocc: response.data.nocc
         });
       }
       console.log(response.data);
