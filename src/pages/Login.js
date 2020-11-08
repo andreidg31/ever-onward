@@ -52,6 +52,7 @@ function Login({user, setUser}) {
       </form>
       <p>{user.email}</p>
       */}
+      <span class="b">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
@@ -72,6 +73,7 @@ function Login({user, setUser}) {
           Login
         </Button>
       </Form>
+      </span>
     </div>
   );
 }

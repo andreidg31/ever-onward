@@ -222,6 +222,17 @@ app.post('/suggestions', (req,res) => {
     })
 })
 
+app.post('/achievements', (req,res) => {
+    let id = req.body.userid;
+    let sql = `SELECT challenges.idchallenges, challenges.name, challenges.description, challenges.score FROM challenges, records WHERE ( records.idusers = '${id}')`;
+    con.query(sql, function (err, result) {
+        if (err) 
+            throw err;
+        result = result.filter((v,i,a) => a.findIndex(t=>(t.idchallenges === v.idchallenges))===i);
+        res.send(result);
+    })
+})
+
 // aici ne zice daca a rezolvat challenge-ul
 app.post('/solved/:idChallenge', (req, res) => {
     let id = req.params.idChallenge;

@@ -1,13 +1,19 @@
 .LoginContainer {
-    margin: 10%;
-    height: max-content;
+    margin-right: 50%;
+    height: 100%;
     width: auto;
-    padding: 5%;
-    background-color: aqua;
-    display: flexbox;
+    padding-top: 10%;
+    background-size: 100% 100%;
+    background-color: transparent;
+    display: block;
+    flex-direction: row;
 }
 
 .LoginForm {
     display: flexbox;
     flex-direction: column;
+}
+
+span.b {
+    display: inline-block;
 }

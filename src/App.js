@@ -28,21 +28,27 @@ function App() {
 
     return (
         <div className="App">
+            <span>
+            {/* <div className="logo"></div> */}
+            <div>
             <Router>
-                <Navbar bg="dark" variant="dark">
-                    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+                <Navbar bg="transparent" id="header">
+                    <Navbar.Brand href="/home"><div className="logo"></div></Navbar.Brand>
+                    <div id="allign_right">
                     <Nav className="mr-auto">
                         <Nav.Link href="/home">Home</Nav.Link>
                         <Nav.Link href="/profile"> Profile </Nav.Link>
                         {!user && <Nav.Link href="/login">Login</Nav.Link> }
                         {!user && <Nav.Link href="/register">Register</Nav.Link> }
-                        {user && <Button onClick={() => logout()}>Logout</Button>}
+                        {user && <Button id="logout" onClick={() => logout() }>Logout</Button>}
                     </Nav>
-                    <Form inline="inline">
+                    </div>
+                    {/* <Form inline="inline">
                         <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
 
-                    </Form>
+                    </Form> */}
                 </Navbar>
+                
                 <div>
                     <Switch>
                         {!user
@@ -59,21 +65,23 @@ function App() {
                         </Route>
                         
                         {!user &&
-                            // <div>
+                            <div>
                                 <Route path="/login">
                                     <Login user={user} setUser={setUser}/>
                                 </Route>
 
-                                // <Route path="/register">
-                                //     <Register/>
-                                // </Route>
-                            // </div>
+                                <Route path="/register">
+                                    <Register/>
+                                </Route>
+                            </div>
                         }
                         
 
                     </Switch>
                 </div>
             </Router>
+            </div>
+            </span>
         </div>
     );
 }

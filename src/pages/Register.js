@@ -57,6 +57,8 @@ function Register({setUser}) {
       <button type="submit"> Login </button>
     </form>
     */}
+    
+    <span class="b">
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group controlId="formSurname">
         <Form.Label>Surname</Form.Label> 
@@ -90,10 +92,13 @@ function Register({setUser}) {
         {errors.verifyPassword && errors.verifyPassword.message}
       </Form.Group>
       
-      <Button variant="secondary" type="submit">
+      <Button type="submit">
         Register
       </Button>
     </Form>
+    </span>
+    
+    
   </div>
   );
 }

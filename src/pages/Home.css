@@ -1,10 +1,92 @@
+.App {
 
-.home {
-    margin: 20px;
-    background-image: url('../assets/homeBackground.png');
-    height: 100%;
+    background-image: url("../assets/Scroll_Group_1.png");
     width: 100%;
-    background-position: center;
+    height: 100%;
+    /* background-position: right; */
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 90% 90%;
+    background-position: right bottom;
+
+}
+
+.body {
+    opacity: 0;
+}
+
+.logo {
+    /* top: 19px;
+    left: 54px; */
+    width: 243px;
+    height: 53px;
+    margin-top: 10px;
+    margin-left: 30px;
+    background: transparent url("../assets/Group\ 96.png") no-repeat padding-box;
+    background-position: top left;
+    opacity: 1;
+}
+.logo {
+    /* top: 19px;
+    left: 54px; */
+    width: 243px;
+    height: 53px;
+    margin-top: 1px;
+    margin-left: 30px;
+    background: transparent url("../assets/Group\ 96.png") no-repeat padding-box;
+    background-position: top left;
+    opacity: 1;
+}
+
+.text1 {
+    /* top: 225px;
+    left: 54px; */
+    width: 734px;
+    height: 242px;
+    margin-top: 3%;
+    margin-left: 30px;
+    background: transparent url("../assets/Plan\ your\ perfect\ travel\ experience.png") no-repeat padding-box;
+    opacity: 1;
+}
+
+.text2 {
+    /* top: 225px;
+    left: 54px; */
+    width: 734px;
+    height: 242px;
+    margin-top: 5%;
+    margin-left: 30px;
+    background: transparent url("../assets/Search\,\ compare\ and\ choose\ the\ right\ place\ for\ your\ vacation\,\ while\ exploring\ astonishing\ destinations\ suitable\ for\ you..png") no-repeat padding-box;
+    opacity: 1;
+}
+
+.App.header {
+    float: right;
+    font-size: 24px;
+}
+
+.navbar.navbar-expand .navbar-nav .nav-link{
+    color: #2E7372;
+    float:right;
+}
+
+.nav-link {
+    font-size:28px;
+    font-weight: 490;
+    font: 'Segoe UI';
+}
+
+
+.navbar.mr-auto{
+    float:right;
+    margin-right: 0%;
+}
+
+.btn.btn-primary{
+    background-color:#2E7372;
+    border-color:#2E7372;
+    color: white;
+    font-size:28px;
+    font-weight: 480;
+    font: 'Segoe UI';
+    
 }
