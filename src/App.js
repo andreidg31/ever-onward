@@ -37,7 +37,7 @@ function App() {
                     <div id="allign_right">
                     <Nav className="mr-auto">
                         <Nav.Link href="/home">Home</Nav.Link>
-                        <Nav.Link href="/profile"> Profile </Nav.Link>
+                        {user && <Nav.Link href="/profile"> Profile </Nav.Link>}
                         {!user && <Nav.Link href="/login">Login</Nav.Link> }
                         {!user && <Nav.Link href="/register">Register</Nav.Link> }
                         {user && <Button id="logout" onClick={() => logout() }>Logout</Button>}
@@ -57,6 +57,8 @@ function App() {
                                 <Redirect exact from="/login" to="/home" />
                                 // <Redirect exact from="/register" to="/home" />
                         }
+                        {user && <Redirect exact from="/register" to="/home" />}
+                        {!user && <Redirect exact from="/profile" to="/home" />}
                         <Route path="/home">
                             <Home user={user} />
                         </Route>
@@ -65,15 +67,15 @@ function App() {
                         </Route>
                         
                         {!user &&
-                            <div>
                                 <Route path="/login">
                                     <Login user={user} setUser={setUser}/>
                                 </Route>
-
+                        }
+                        {!user &&
                                 <Route path="/register">
                                     <Register/>
                                 </Route>
-                            </div>
+                            
                         }
                         
 

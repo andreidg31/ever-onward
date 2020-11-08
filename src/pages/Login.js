@@ -55,7 +55,7 @@ function Login({user, setUser}) {
       </form>
       <p>{user.email}</p>
       */}
-      <span class="b">
+      <span className="b">
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

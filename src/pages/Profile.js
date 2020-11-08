@@ -1,4 +1,4 @@
-import {Image} from 'react-bootstrap';
+import {Col, Row, Container, Image} from 'react-bootstrap';
 import axios from 'axios';
 import LocationVisited from '../components/LocationVisited';
 import LocationSuggested from '../components/LocationSuggested';
@@ -101,22 +101,38 @@ function Profile({user}) {
             <p>
                 Explorer Level {level}
             </p>
-            <div class="abouts"></div>
-            <div class="tables">
-                <div class="c">
-                    Visited {renderVisitedLocations()}
-                </div>
-                <div class="c">
-                    <h3>Badges</h3> 
-                {return_achievements()}
-                </div>
-                <div class="c">
-                    Suggestions {renderSuggestedLocations()}
-                </div>
+            <div className="abouts"></div>
+            <Container>
+            <div className="tables">
+                <Row className="rw">
+                    <Col>
+                        <div className="c">
+                        <h1>Visited</h1>
+                        {renderVisitedLocations()}
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="rw">
+                    <Col>
+                        <div className="c">
+                            <h3>Badges</h3> 
+                        {return_achievements()}
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="rw">
+                    <Col>
+                    <div className="c">
+                        <h1>Suggestions</h1>
+                        {renderSuggestedLocations()}
+                    </div>
+                    </Col>
+                </Row>
                 {/* <div class="c">hey</div>
                 <div class="c">hey</div> */
                 }
             </div>
+            </Container>
         </div>
     );
 

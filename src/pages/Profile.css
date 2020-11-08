@@ -32,7 +32,6 @@ div.c {
 
 span.c {
     display: inline-block;
-    /* align-items: stretch; */
     /* padding: 10%; */
     margin-top: 15%;
     margin-left: 30px;
@@ -49,3 +48,11 @@ span.c {
     background-color: yellow; 
     font:30px;
   }
+.rw {
+  margin: 15px;
+}
+.tables {
+  display: flexbox;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
