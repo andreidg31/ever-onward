@@ -107,27 +107,25 @@ function Profile({user}) {
                 <Row className="rw">
                     <Col>
                         <div className="c">
-                        <h1>Visited</h1>
-                        {renderVisitedLocations()}
-                        </div>
-                    </Col>
-                </Row>
-                <Row className="rw">
-                    <Col>
-                        <div className="c">
                             <h3>Badges</h3> 
                         {return_achievements()}
                         </div>
                     </Col>
                 </Row>
+
                 <Row className="rw">
                     <Col>
-                    <div className="c">
+                        <div className="c">
+                        <h1>Visited</h1>
+                        {renderVisitedLocations()}
+                        </div>
+                        <div className="c">
                         <h1>Suggestions</h1>
                         {renderSuggestedLocations()}
                     </div>
                     </Col>
                 </Row>
+                
                 {/* <div class="c">hey</div>
                 <div class="c">hey</div> */
                 }

@@ -26,7 +26,7 @@ div.c {
     height: 100%;
     /* padding: 5px; */
     border: 1px solid blue;    
-    background-color: yellow; 
+    background-color: rgba(255, 140, 0, 0.6);
     font:30px;
 }
 
@@ -45,7 +45,7 @@ span.c {
     height: 100%;
     /* padding: 5px; */
     border: 1px solid blue;    
-    background-color: yellow; 
+    background-color: rgba(255, 140, 0, 0.6);
     font:30px;
   }
 .rw {
